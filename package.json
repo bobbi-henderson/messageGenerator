@@ -1,0 +1,11 @@
+{
+  "name": "messagegenerator",
+  "version": "1.0.0",
+  "description": "Creates customizable message templates for use in a hospitality setting.",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": "Bobbi Henderson",
+  "license": "ISC"
+}
