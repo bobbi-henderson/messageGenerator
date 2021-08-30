@@ -1,0 +1,33 @@
+[
+    {
+      "id": 1,
+      "name": "Check-in",
+      "messageText": "${greeting} ${guestFirst}, and welcome to ${company}! ${roomNumber} is now ready for you. Enjoy your stay, and let is know if you need anything."
+    },
+    {
+      "id": 2,
+      "name": "Check-out",
+      "messageText": "${greeting} ${guestFirst}, and we hope you enjoyed your stay with us at ${company}! We have emailed you a receipt for your stay. If you have any feedback about room ${roomNumber} we would love to hear from you. Have a safe trip home!"
+    },
+    {
+      "id": 3,
+      "name": "Check-out reminder",
+      "messageText": "${greeting} ${guestFirst}, we hope you are enjoying your stay at ${company}. We currently have you scheduled to checkout tomorrow, ${endTime}. Please let the front desk know if you need to modify your reservation. Otherwise, we hope you will join us for breakfast in the common room prior to your departure."
+    },
+    {
+      "id": 4,
+      "name": "Extra Pillow Request",
+      "messageText": "${greeting} ${guestFirst}, we hope you are enjoying your stay at ${company}! We have recieved your request for extra pillows and will be delivering them shortly to your room ${roomNumber}. Please let us know if there is anything else you need."
+    },
+    {
+      "id": 5,
+      "name": "Guest Recovery - Comp Food",
+      "messageText": "${greeting} ${guestFirst}, we are very sorry to hear that you had an issue with room ${roomNumber}. Here at ${company} we never want our guests to feel uncomfortable in any way during your stay. Due to the inconvenience you have experienced, have left a gift certifcate in your room for a complimentary dinner at our attached 5 star restaurant. Please let us know if there is anything else we can do to provide you with the experience you deserve."
+    },
+    {
+      "id": 6,
+      "name": "Guest Recovery - Comp Room",
+      "messageText": "${greeting} ${guestFirst}, we sincerely apologize you were not fully satisfied with your stay at ${company} in room ${roomNumber}. We never want our guests to feel uncomfortable in any way while staying with us, and we greatly appreciate your feedback. Please be assured we have issued you a full refund for last night to the card on file. Please let us know if there is anything else we can do for you at this time."
+    }
+]
+  

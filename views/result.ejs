@@ -1,0 +1,48 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Message Generator</title>
+
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-EVSTQN3/azprG1Anm3QDgpJLIm9Nao0Yz1ztcQTwFspd3yD65VohhpuuCOmLASjC" crossorigin="anonymous">
+</head>
+<body class="p-4">
+    <h3>Generated Message</h3>
+    <p><%=message%></p>
+
+    <h3>Create New Message Here</h3>
+
+    <form action="/generateMessage" method="POST" class="row">
+        <div class="col-auto mb-3">
+            <label for="guest" class="form-label">Select Guest:</label>
+            <select name="guest" id="guest" class="form-control">
+                <%for(const guest of guests){%>
+                    <option value="<%=guest.id%>"><%=guest.firstName%> <%=guest.lastName%></option>
+                <%}%>
+            </select>
+        </div>
+        <div class="col-auto mb-3">
+            <label for="company" class="form-label">Select Company:</label>
+            <select name="company" id="company" class="form-control">
+                <%for(const company of companies){%>
+                    <option value="<%=company.id%>"><%=company.company%></option>
+                <%}%>
+            </select>
+        </div>
+        <div class="col-auto mb-3">
+            <label for="message" class="form-label">Select Message:</label>
+            <select name="message" id="message" class="form-control">
+                <%for(const message of messages){%>
+                    <option value="<%=message.id%>"><%=message.name%></option>
+                <%}%>
+            </select>
+        </div>
+        <div>
+            <input type="submit" value="Submit" class="btn btn-primary">
+        </div>
+    </form>
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.bundle.min.js" integrity="sha384-MrcW6ZMFYlzcLA8Nl+NtUVF0sA7MsXsP1UyJoMp4YLEuNSfAP+JcXn/tWtIaxVXM" crossorigin="anonymous"></script>
+</body>
+</html>
