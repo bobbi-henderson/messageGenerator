@@ -13,91 +13,101 @@ app.use(express.urlencoded({ extended: true }))
 app.use(express.json())
 
 app.get('/', (req, res)=>{
-    //renders the landing page with a form that populates with values from the json data
-    res.render('index.ejs', {guests: guests, companies: companies, messages: messages})
+    try {
+        //renders the landing page with a form that populates with values from the json data
+        res.render('index.ejs', {guests: guests, companies: companies, messages: messages})
+    } catch (err) {
+        console.log(err)
+    }
+    
 })
 
 app.post('/generateMessage', (req, res)=>{
-    //holds the ids for the user selected inputs
-    let guestId = req.body.guest,
-        companyId = req.body.company,
-        messageId = req.body.message
+    try {
+        //holds the ids for the user selected inputs
+        let guestId = req.body.guest,
+            companyId = req.body.company,
+            messageId = req.body.message
 
-    const messageData = {
-        templateValues: {
-            guestFirst: '',
-            guestLast: '',
-            roomNumber: '',
-            startTime: '',
-            endTime: '', 
-            company: '',
-            city: '',
-            timezone: '',
-            greeting: '',
-        },
-        message: '',
-        setGreeting: function(){
-            let d = new Date()
-            let hrs = d.getHours()
-            
-            if(hrs < 12){
-                this.templateValues.greeting = "Good Morning"
-            } else if (hrs >= 12 && hrs <= 17){
-                this.templateValues.greeting = "Good Afternoon"
-            } else if (hrs >= 17 && hrs <= 24){
-                this.templateValues.greeting = "Good Evening"
-            }
-        }, 
-        //function that parses the message string to include the template variables
-        parseStringTemplate: function(str, obj) {
-            let parts = str.split(/\$\{(?!\d)[\wæøåÆØÅ]*\}/g);
-            let args = str.match(/[^{\}]+(?=})/g) || [];
-            let params = args.map(argument => obj[argument] || (obj[argument] === undefined ? "" : obj[argument]));
-            return String.raw({ raw: parts }, ...params);
-        },
-    }
-
-    //called to set greeting for time request is submitted
-    messageData.setGreeting()
-
-    //finds the user selected guest and populates the messageData object with their information
-    for(const guest of guests){
-        if(guest.id == guestId){
-            messageData.templateValues.guestFirst = guest.firstName
-            messageData.templateValues.guestLast = guest.lastName
-            messageData.templateValues.roomNumber = guest.reservation.roomNumber
-            messageData.templateValues.startTime = `${new Date(guest.reservation.startTimestamp).toLocaleDateString()} at ${new Date(guest.reservation.startTimestamp).toLocaleTimeString()}`
-            messageData.templateValues.endTime = `${new Date(guest.reservation.endTimestamp).toLocaleDateString()} at ${new Date(guest.reservation.endTimestamp).toLocaleTimeString()}`
+        const messageData = {
+            templateValues: {
+                guestFirst: '',
+                guestLast: '',
+                roomNumber: '',
+                startTime: '',
+                endTime: '', 
+                company: '',
+                city: '',
+                timezone: '',
+                greeting: '',
+            },
+            message: '',
+            setGreeting: function(){
+                let d = new Date()
+                let hrs = d.getHours()
+                
+                if(hrs < 12){
+                    this.templateValues.greeting = "Good Morning"
+                } else if (hrs >= 12 && hrs <= 17){
+                    this.templateValues.greeting = "Good Afternoon"
+                } else if (hrs >= 17 && hrs <= 24){
+                    this.templateValues.greeting = "Good Evening"
+                }
+            }, 
+            //function that parses the message string to include the template variables
+            parseStringTemplate: function(str, obj) {
+                let parts = str.split(/\$\{(?!\d)[\wæøåÆØÅ]*\}/g);
+                let args = str.match(/[^{\}]+(?=})/g) || [];
+                let params = args.map(argument => obj[argument] || (obj[argument] === undefined ? "" : obj[argument]));
+                return String.raw({ raw: parts }, ...params);
+            },
         }
-    }
 
-    //finds the user selected company and populates the messageData object with their information
-    for(const company of companies){
-        if(company.id == companyId){
-            messageData.templateValues.company = company.company
-            messageData.templateValues.city = company.city
-            messageData.templateValues.timezone = company.timezone
-        }
-    }
-    
-    
-    //checks if the user inputed a custom message or selected template and populates message in the messageData object
-    if(messageId == 'custom'){
-        messageData.message = req.body.customMessage
-    } else {    
-        for(const message of messages){
-            if(message.id == messageId){
-                messageData.message = message.messageText
+        //set greeting based on current time
+        messageData.setGreeting()
+
+        //finds the user selected guest and populates the messageData object with their information
+        for(const guest of guests){
+            if(guest.id == guestId){
+                messageData.templateValues.guestFirst = guest.firstName
+                messageData.templateValues.guestLast = guest.lastName
+                messageData.templateValues.roomNumber = guest.reservation.roomNumber
+                messageData.templateValues.startTime = `${new Date(guest.reservation.startTimestamp).toLocaleDateString()} at ${new Date(guest.reservation.startTimestamp).toLocaleTimeString()}`
+                messageData.templateValues.endTime = `${new Date(guest.reservation.endTimestamp).toLocaleDateString()} at ${new Date(guest.reservation.endTimestamp).toLocaleTimeString()}`
             }
         }
+
+        //finds the user selected company and populates the messageData object with their information
+        for(const company of companies){
+            if(company.id == companyId){
+                messageData.templateValues.company = company.company
+                messageData.templateValues.city = company.city
+                messageData.templateValues.timezone = company.timezone
+            }
+        }
+
+
+        //checks if the user inputed a custom message or selected a template and populates message in the messageData object
+        if(messageId == 'custom'){
+            messageData.message = req.body.customMessage
+        } else {    
+            for(const message of messages){
+                if(message.id == messageId){
+                    messageData.message = message.messageText
+                }
+            }
+        }
+
+
+        //uses the messageData object to assemble the generated string
+        const result = messageData.parseStringTemplate(messageData.message, messageData.templateValues)
+
+        //renders the result template that shows the generated message to the user and allows them to generate a new message
+        res.render('result.ejs', {guests: guests, companies: companies, messages: messages, message: result})
+    } catch (err) {
+        console.log(err)
     }
 
-    
-    //uses the messageData object to assemble the generated string
-    const result = messageData.parseStringTemplate(messageData.message, messageData.templateValues)
-
-    //renders the result template that shows the generated message to the user and allows them to generate a new message
-    res.render('result.ejs', {guests: guests, companies: companies, messages: messages, message: result})
 })
 
 app.listen(process.env.PORT || PORT, () => {
