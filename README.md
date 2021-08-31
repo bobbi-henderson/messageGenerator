@@ -3,9 +3,10 @@
 An app that can be used to generate custom messages for a company to send it's clients. Currently optimized for use in a hospitality setting.
 
 ## Installation 
-Clone the repository.
+Clone the repository and cd into project directory.
 ```bash
 git clone https://github.com/bobbi-henderson/messageGenerator.git
+cd messageGenerator
 ```
 Install the required libraries and package dependencies.
 ```bash
