@@ -36,7 +36,6 @@ app.post('/generateMessage', (req, res)=>{
             greeting: '',
         },
         message: '',
-        //function that sets the greeting based on the current time
         setGreeting: function(){
             let d = new Date()
             let hrs = d.getHours()
@@ -81,12 +80,18 @@ app.post('/generateMessage', (req, res)=>{
         }
     }
     
-    //finds the user selected message text (templated string) and populates it in the messageData object
-    for(const message of messages){
-        if(message.id == messageId){
-            messageData.message = message.messageText
+    
+    //checks if the user inputed a custom message or selected template and populates message in the messageData object
+    if(messageId == 'custom'){
+        messageData.message = req.body.customMessage
+    } else {    
+        for(const message of messages){
+            if(message.id == messageId){
+                messageData.message = message.messageText
+            }
         }
     }
+
     
     //uses the messageData object to assemble the generated string
     const result = messageData.parseStringTemplate(messageData.message, messageData.templateValues)
