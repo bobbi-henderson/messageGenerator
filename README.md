@@ -3,6 +3,11 @@
 An app that can be used to generate custom messages for a company to send it's clients. Currently optimized for use in a hospitality setting.
 
 ## Installation 
+Clone the repository.
+```bash
+git clone https://github.com/bobbi-henderson/messageGenerator.git
+```
+Install the required libraries and package dependencies.
 ```bash
 npm install
 ```
@@ -11,6 +16,7 @@ npm install
 ```bash
 npm start
 ```
+Open [http://localhost:8000/](http://localhost:8000/) to view application.
 
 ## Programming Details
 ### Language Choice
